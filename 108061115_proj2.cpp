@@ -318,6 +318,7 @@ int main(int argc, char *argv[])
     Robot robot;
 
     robot.ReadFile(argv[1]);
+    robot.FindAdjNode();
     robot.WriteFile();
     return 0;
 }
