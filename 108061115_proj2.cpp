@@ -188,7 +188,7 @@ class Robot {
     public:
         Robot() {}
         ~Robot() {}
-        void ReadFile();
+        void ReadFile(char* file);
         void FindAdjNode();
         void FindDisToR();
         void DFS(position p);
@@ -201,43 +201,79 @@ class Robot {
         // Not done yet
 };
 
-int main(int argc, char *argv[])
+void Robot::ReadFile(char* file)
 {
-    /*fstream in_file;
-    ofstream out_file("108061115.path");
+    fstream in_file;
     char d;
+    FloorNode* temp;
     
-    in_file.open(argv[1], ios::in);
+    in_file.open(file, ios::in);
     if (!in_file) {
          cout << "Fail to open file " << endl;
-        return 0;
+        return;
     }
     in_file >> width >> length >> B;
-    room = new char* [width];
+    room = new FloorNode*[width];
     for (int i = 0; i < width; i++) {
-        room[i] = new char[length];
+        room[i] = new FloorNode[length];
     }
     for (int i = 0; i < width; i ++) {
         for (int j = 0; j < length; j++) {
             in_file >> d;
-            room[i][j] = d;
+            temp = new FloorNode(d);
+            if (d == 'R') {
+                R.row = i;
+                R.col = j;
+            }
+            room[i][j] = *temp;
         }
     }
     in_file.close();
+    return;
+}
 
-    // Thoughts: BFS to find the step from the battery to every FloorNode (DistanceToR in FloorNode). 
-    // While cleaning, use BFS (keep eyes on the battery level and DistanceToR)
+void Robot::FindAdjNode()
+{
+    
+}
 
+void Robot::FindDisToR()
+{
+
+}
+
+void Robot::DFS(position p)
+{
+
+}
+
+void Robot::Cleaning()
+{
+
+}
+
+void Robot::WriteFile()
+{
+    ofstream out_file("108061115.path");
     if(!out_file) {
         cout<< "Can't open out_file!" << endl;
-        return 0;
+        return;
     }
-    out_file << width << " " << length << " " << B << endl;
+    out_file << width << length << B << endl;
     for (int i = 0; i < width; i ++) {
         for (int j = 0; j < length; j++) {
-            out_file << room[i][j];
+            if (j == length -1) {
+                out_file << room[i][j].ch << endl;
+            } else {
+                out_file << room[i][j].ch;
+            }
         }
     }
-    out_file.close();*/
+    out_file.close();
+    return;
+}
+
+int main(int argc, char *argv[])
+{
     return 0;
 }
