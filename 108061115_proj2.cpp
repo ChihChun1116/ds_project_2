@@ -205,7 +205,7 @@ void Robot::ReadFile(char* file)
 {
     fstream in_file;
     char d;
-    FloorNode* temp;
+    FloorNode temp;
     
     in_file.open(file, ios::in);
     if (!in_file) {
@@ -220,12 +220,12 @@ void Robot::ReadFile(char* file)
     for (int i = 0; i < width; i ++) {
         for (int j = 0; j < length; j++) {
             in_file >> d;
-            temp = new FloorNode(d);
+            temp = *new FloorNode(d);
             if (d == 'R') {
                 R.row = i;
                 R.col = j;
             }
-            room[i][j] = *temp;
+            room[i][j] = temp;
         }
     }
     in_file.close();
@@ -259,7 +259,7 @@ void Robot::WriteFile()
         cout<< "Can't open out_file!" << endl;
         return;
     }
-    out_file << width << length << B << endl;
+    /*out_file << width << length << B << endl;
     for (int i = 0; i < width; i ++) {
         for (int j = 0; j < length; j++) {
             if (j == length -1) {
@@ -268,12 +268,17 @@ void Robot::WriteFile()
                 out_file << room[i][j].ch;
             }
         }
-    }
+    }*/
+    // need adjustment
     out_file.close();
     return;
 }
 
 int main(int argc, char *argv[])
 {
+    Robot robot;
+
+    robot.ReadFile(argv[1]);
+    //robot.WriteFile();
     return 0;
 }
