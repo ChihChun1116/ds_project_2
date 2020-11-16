@@ -198,6 +198,7 @@ class Robot {
     private:
         position R;
         FloorNode** room;
+        bool** cleaned;
         // Not done yet
 };
 
@@ -278,8 +279,36 @@ void Robot::FindAdjNode()
 
 void Robot::FindDisToR()
 {
+    int D = 0;
+    sq_node<position>* current;
+    queue<position> Q;
 
+    cleaned = new bool* [width];
+    for (int i = 0; i < width; i++) {
+        cleaned[i] = new bool[length];
+    }
+    for (int i = 0; i < width; i++) {
+        for (int j = 0; j < length; j++) {
+            cleaned[i][j] = false;
+        }
+    }
+    cleaned[R.row][R.col] = true;
+    room[R.row][R.col].DistanceToR = D;
+    Q.push(R);
+    while (!Q.IsEmpty()) {
+        position node = Q.Front();
+        Q.pop();
+        for (current = room[node.row][node.col].AdjacentNode.front; current != NULL; current = current->next) {
+            if (cleaned[current->value.row][current->value.col] == false) {
+                cleaned[current->value.row][current->value.col] = true;
+                room[current->value.row][current->value.col].DistanceToR = room[node.row][node.col].DistanceToR + 1;
+                room[current->value.row][current->value.col].parent = node;
+            }
+        }
+    }
+    return;
 }
+
 
 void Robot::DFS(position p)
 {
@@ -302,9 +331,9 @@ void Robot::WriteFile()
     for (int i = 0; i < width; i ++) {
         for (int j = 0; j < length; j++) {
             if (j == length -1) {
-                out_file << "(" << room[i][j].AdjacentNode.Front().row << " " << room[i][j].AdjacentNode.Front().col << ")"<< endl;
+                out_file << room[i][j].DistanceToR << endl;
             } else {
-                out_file << "(" << room[i][j].AdjacentNode.Front().row << " " << room[i][j].AdjacentNode.Front().col << ")";
+                out_file << room[i][j].DistanceToR;
             }
         }
     }
@@ -319,6 +348,7 @@ int main(int argc, char *argv[])
 
     robot.ReadFile(argv[1]);
     robot.FindAdjNode();
+    robot.FindDisToR();
     robot.WriteFile();
     return 0;
 }
