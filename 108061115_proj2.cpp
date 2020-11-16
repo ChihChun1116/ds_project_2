@@ -234,7 +234,46 @@ void Robot::ReadFile(char* file)
 
 void Robot::FindAdjNode()
 {
-    
+    for (int i = 0; i < width; i++) {
+        for (int j = 0; j < length; j++) {
+            if (room[i][j].ch != '1') {
+                if (i != 0 && i != width - 1 && j != 0 && j != length - 1) {
+                    if (room[i - 1][j].ch != '1') {
+                        position adjacent(i - 1, j);
+                        room[i][j].AdjacentNode.push(adjacent);
+                    }
+                    if (room[i + 1][j].ch != '1') {
+                        position adjacent(i + 1, j);
+                        room[i][j].AdjacentNode.push(adjacent);
+                    }
+                    if (room[i][j - 1].ch != '1') {
+                        position adjacent(i, j - 1);
+                        room[i][j].AdjacentNode.push(adjacent);
+                    }
+                    if (room[i][j + 1].ch != '1') {
+                        position adjacent(i, j + 1);
+                        room[i][j].AdjacentNode.push(adjacent);
+                    }
+                } else {
+                    if ((i == 0 && j == 0) || (i == width - 1 && j == 0) || (i == 0 && j == length - 1) || (i == width - 1 && j == length - 1)) {
+                    } else if (i == 0) {
+                        position adjacent(i + 1, j);
+                        room[i][j].AdjacentNode.push(adjacent);
+                    } else if (i == width - 1) {
+                        position adjacent(i - 1, j);
+                        room[i][j].AdjacentNode.push(adjacent);
+                    } else if (j == 0) {
+                        position adjacent(i, j + 1);
+                        room[i][j].AdjacentNode.push(adjacent);
+                    } else if (j == length - 1) {
+                        position adjacent(i , j + 1);
+                        room[i][j].AdjacentNode.push(adjacent);
+                    }
+                }
+            }
+        }
+    }
+    return;
 }
 
 void Robot::FindDisToR()
@@ -259,16 +298,16 @@ void Robot::WriteFile()
         cout<< "Can't open out_file!" << endl;
         return;
     }
-    /*out_file << width << length << B << endl;
+    //out_file << width << length << B << endl;
     for (int i = 0; i < width; i ++) {
         for (int j = 0; j < length; j++) {
             if (j == length -1) {
-                out_file << room[i][j].ch << endl;
+                out_file << "(" << room[i][j].AdjacentNode.Front().row << " " << room[i][j].AdjacentNode.Front().col << ")"<< endl;
             } else {
-                out_file << room[i][j].ch;
+                out_file << "(" << room[i][j].AdjacentNode.Front().row << " " << room[i][j].AdjacentNode.Front().col << ")";
             }
         }
-    }*/
+    }
     // need adjustment
     out_file.close();
     return;
@@ -279,6 +318,6 @@ int main(int argc, char *argv[])
     Robot robot;
 
     robot.ReadFile(argv[1]);
-    //robot.WriteFile();
+    robot.WriteFile();
     return 0;
 }
