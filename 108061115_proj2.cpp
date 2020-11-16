@@ -160,6 +160,7 @@ int main(int argc, char *argv[])
     fstream in_file;
     ofstream out_file("108061115.path");
     char d;
+    int x;
     
     in_file.open(argv[1], ios::in);
     if (!in_file) {
