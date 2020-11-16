@@ -4,9 +4,9 @@ using namespace std;
 
 int length, width;
 int B;
-char** room;
 template <class T> class stack;
 template <class T> class queue;
+class Robot;
 
 template <class T>
 class sq_node {
@@ -25,6 +25,7 @@ class sq_node {
 
 template <class T>
 class queue {
+    friend class Robot;
 
     public:
         queue(): front(NULL), rear(NULL), q_size(0) {}
@@ -94,6 +95,7 @@ bool queue<T>::IsEmpty()
 
 template <class T>
 class stack {
+    friend class Robot;
 
     public:
         stack(): top(NULL), s_size(0) {}
@@ -156,6 +158,7 @@ bool stack<T>::IsEmpty()
 }
 
 class position {
+    friend class Robot;
 
     public:
         position(): row(0), col(0) {}
@@ -167,22 +170,40 @@ class position {
 };
 
 class FloorNode {
+    friend class Robot;
+
     public:
         FloorNode() {}
-        FloorNode(int r, int c, char d): row(r), col(c), ch(d), DistanceToR(0) {}
+        FloorNode(char d): ch(d), DistanceToR(0) {}
         ~FloorNode() {}
 
     private:
         int DistanceToR;
-        int row, col;
         char ch;
         queue<position> AdjacentNode;
         position parent;
 };
 
+class Robot {
+    public:
+        Robot() {}
+        ~Robot() {}
+        void ReadFile();
+        void FindAdjNode();
+        void FindDisToR();
+        void DFS(position p);
+        void Cleaning();
+        void WriteFile();
+
+    private:
+        position R;
+        FloorNode** room;
+        // Not done yet
+};
+
 int main(int argc, char *argv[])
 {
-    fstream in_file;
+    /*fstream in_file;
     ofstream out_file("108061115.path");
     char d;
     
@@ -207,7 +228,7 @@ int main(int argc, char *argv[])
     // Thoughts: BFS to find the step from the battery to every FloorNode (DistanceToR in FloorNode). 
     // While cleaning, use BFS (keep eyes on the battery level and DistanceToR)
 
-    /*if(!out_file) {
+    if(!out_file) {
         cout<< "Can't open out_file!" << endl;
         return 0;
     }
