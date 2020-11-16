@@ -303,6 +303,7 @@ void Robot::FindDisToR()
                 cleaned[current->value.row][current->value.col] = true;
                 room[current->value.row][current->value.col].DistanceToR = room[node.row][node.col].DistanceToR + 1;
                 room[current->value.row][current->value.col].parent = node;
+                Q.push(current->value);
             }
         }
     }
