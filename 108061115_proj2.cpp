@@ -155,12 +155,36 @@ bool stack<T>::IsEmpty()
     }
 }
 
+class position {
+
+    public:
+        position(): row(0), col(0) {}
+        position(int r, int c): row(r), col(c) {}
+        ~position() {}
+    
+    private:
+        int row, col;
+};
+
+class FloorNode {
+    public:
+        FloorNode() {}
+        FloorNode(int r, int c, char d): row(r), col(c), ch(d), DistanceToR(0) {}
+        ~FloorNode() {}
+
+    private:
+        int DistanceToR;
+        int row, col;
+        char ch;
+        queue<position> AdjacentNode;
+        position parent;
+};
+
 int main(int argc, char *argv[])
 {
     fstream in_file;
     ofstream out_file("108061115.path");
     char d;
-    int x;
     
     in_file.open(argv[1], ios::in);
     if (!in_file) {
@@ -179,7 +203,11 @@ int main(int argc, char *argv[])
         }
     }
     in_file.close();
-    if(!out_file) {
+
+    // Thoughts: BFS to find the step from the battery to every FloorNode (DistanceToR in FloorNode). 
+    // While cleaning, use BFS (keep eyes on the battery level and DistanceToR)
+
+    /*if(!out_file) {
         cout<< "Can't open out_file!" << endl;
         return 0;
     }
@@ -189,6 +217,6 @@ int main(int argc, char *argv[])
             out_file << room[i][j];
         }
     }
-    out_file.close();
+    out_file.close();*/
     return 0;
 }
