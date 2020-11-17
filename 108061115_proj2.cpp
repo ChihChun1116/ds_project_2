@@ -427,21 +427,16 @@ void Robot::Cleaning()
 void Robot::WriteFile()
 {
     ofstream out_file("108061115.path");
-    if(!out_file) {
+    if (!out_file) {
         cout<< "Can't open out_file!" << endl;
         return;
     }
-    //out_file << width << length << B << endl;
-    for (int i = 0; i < width; i ++) {
-        for (int j = 0; j < length; j++) {
-            if (j == length -1) {
-                out_file << room[i][j].DistanceToR << endl;
-            } else {
-                out_file << room[i][j].DistanceToR;
-            }
-        }
+    out_file << route.size() << endl;
+    out_file << R.row << " " << R.col << endl;
+    while (!route.IsEmpty()) {
+        out_file << route.Front().row << " " << route.Front().col << endl;
+        route.pop();
     }
-    // need adjustment
     out_file.close();
     return;
 }
