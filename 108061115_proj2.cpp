@@ -386,8 +386,20 @@ void Robot::DFS(position p)
             break;
         }
     }
-    // To Do
-
+    while (!(temp.row == R.row && temp.col == R.col)) {
+        temp = room[temp.row][temp.col].parent;
+        for (sq_node<position>* n = room[temp.row][temp.col].AdjacentNode.front; n != NULL; n = n->next) {
+            if (cleaned[n->value.row][n->value.col] == false) {
+                visit.push(n->value);
+            }
+        }
+        cleaned[temp.row][temp.col] = true;
+        route.push(temp);
+    }
+    while (!through.IsEmpty()) {
+        through.pop();
+    }
+    return;
 }
 
 void Robot::Cleaning()
