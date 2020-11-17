@@ -200,6 +200,7 @@ class Robot {
         FloorNode** room;
         bool** cleaned;
         stack<position> dfspoint;
+        queue<position> route;
         // Not done yet
 };
 
@@ -320,6 +321,7 @@ void Robot::DFS(position p)
 {
     int b_level = B;
     stack<position> visit;
+    stack<position> through;
     position temp(p.row, p.col);
 
     cleaned[temp.row][temp.col] = true;
@@ -327,7 +329,19 @@ void Robot::DFS(position p)
         visit.push(temp);
         temp = room[temp.row][temp.col].parent;
     }
-    b_level -= room[p.row][p.col].DistanceToR; //shortest path to p
+    b_level = b_level - visit.size();
+    while(!visit.IsEmpty()) {
+        through.push(temp);
+        temp = visit.Top();
+        for (sq_node<position>* n = room[temp.row][temp.col].AdjacentNode.front; n != NULL; n = n->next) {
+            if (cleaned[n->value.row][n->value.col] == false) {
+                dfspoint.push(n->value);
+            }
+        }
+        cleaned[temp.row][temp.col] = true;
+        route.push(temp);
+        visit.pop();
+    }
 
     // To Do
 
