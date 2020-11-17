@@ -307,6 +307,10 @@ void Robot::FindDisToR()
             }
         }
     }
+    for (int i = 0; i < width; i++) {
+        delete [] cleaned[i];
+    }
+    delete [] cleaned;
     return;
 }
 
@@ -318,7 +322,16 @@ void Robot::DFS(position p)
 
 void Robot::Cleaning()
 {
-
+    cleaned = new bool* [width];
+    for (int i = 0; i < width; i++) {
+        cleaned[i] = new bool[length];
+    }
+    for (int i = 0; i < width; i++) {
+        for (int j = 0; j < length; j++) {
+            cleaned[i][j] = false;
+        }
+    }
+    // stack DFS
 }
 
 void Robot::WriteFile()
