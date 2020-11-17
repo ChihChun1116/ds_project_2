@@ -199,6 +199,7 @@ class Robot {
         position R;
         FloorNode** room;
         bool** cleaned;
+        stack<position> dfspoint;
         // Not done yet
 };
 
@@ -317,6 +318,18 @@ void Robot::FindDisToR()
 
 void Robot::DFS(position p)
 {
+    int b_level = B;
+    stack<position> visit;
+    position temp(p.row, p.col);
+
+    cleaned[temp.row][temp.col] = true;
+    while (temp.row != R.row || temp.col != R.col) {
+        visit.push(temp);
+        temp = room[temp.row][temp.col].parent;
+    }
+    b_level -= room[p.row][p.col].DistanceToR; //shortest path to p
+
+    // To Do
 
 }
 
@@ -331,7 +344,15 @@ void Robot::Cleaning()
             cleaned[i][j] = false;
         }
     }
-    // stack DFS
+    dfspoint.push(R);
+    while (!dfspoint.IsEmpty()) {
+        position node = dfspoint.Top();
+        dfspoint.pop();
+        if (cleaned[node.row][node.col] == false) {
+            DFS(node);
+        }
+    }
+    return;
 }
 
 void Robot::WriteFile()
