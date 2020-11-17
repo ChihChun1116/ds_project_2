@@ -112,7 +112,7 @@ class stack {
 };
 
 template <class T>
-void stack<T>::push(T &item)
+void stack<T>::push(T& item)
 {
     sq_node<T>* temp = new sq_node<T>(item);
 
@@ -201,7 +201,6 @@ class Robot {
         bool** cleaned;
         stack<position> dfspoint;
         queue<position> route;
-        // Not done yet
 };
 
 void Robot::ReadFile(char* file)
@@ -327,7 +326,7 @@ void Robot::DFS(position p)
     position temp(p.row, p.col);
 
     cleaned[temp.row][temp.col] = true;
-    while (temp.row != R.row || temp.col != R.col) {
+    while (!(temp.row == R.row && temp.col == R.col)) {
         visit.push(temp);
         temp = room[temp.row][temp.col].parent;
     }
@@ -421,6 +420,10 @@ void Robot::Cleaning()
             DFS(node);
         }
     }
+    for (int i = 0; i < width; i++) {
+        delete [] cleaned[i];
+    }
+    delete [] cleaned;
     return;
 }
 
