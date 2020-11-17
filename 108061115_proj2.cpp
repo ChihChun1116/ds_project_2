@@ -444,7 +444,7 @@ void Robot::WriteFile()
     return;
 }
 
-int main(int argc, char *argv[])
+int main(int argc, char *argv[]) // success
 {
     Robot robot;
 
