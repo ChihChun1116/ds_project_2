@@ -269,7 +269,7 @@ void Robot::FindAdjNode()
                         position adjacent(i, j + 1);
                         room[i][j].AdjacentNode.push(adjacent);
                     } else if (j == length - 1) {
-                        position adjacent(i , j + 1);
+                        position adjacent(i , j - 1);
                         room[i][j].AdjacentNode.push(adjacent);
                     }
                 }
@@ -320,6 +320,8 @@ void Robot::FindDisToR()
 void Robot::DFS(position p)
 {
     int b_level = B;
+    int x;
+    int path;
     stack<position> visit;
     stack<position> through;
     position temp(p.row, p.col);
@@ -342,7 +344,48 @@ void Robot::DFS(position p)
         route.push(temp);
         visit.pop();
     }
-
+    x = room[temp.row][temp.col].DistanceToR;
+    while (b_level > x) {
+        path = 0;
+        for (sq_node<position>* n = room[temp.row][temp.col].AdjacentNode.front; n != NULL; n = n->next) {
+            if (cleaned[n->value.row][n->value.col] == false) {
+                dfspoint.push(n->value);
+                path++;
+            }
+        }
+        if (path != 0) {
+            through.push(temp);
+            temp = dfspoint.Top();
+            if (room[temp.row][temp.col].DistanceToR < b_level) {
+                cleaned[temp.row][temp.col] = true;
+                b_level--;
+                route.push(temp);
+                dfspoint.pop();
+            } else {
+                temp = through.Top();
+                break;
+            }
+        } else if (path == 0) {
+            if (!through.IsEmpty()) {
+                if (room[through.Top().row][through.Top().col].DistanceToR < b_level) {
+                    b_level--;
+                    temp = through.Top();
+                    route.push(temp);
+                    through.pop();
+                } else {break;}
+            } else {break;}
+        }
+        x = room[temp.row][temp.col].DistanceToR;
+        if (b_level == x) {
+            for (sq_node<position>* n = room[temp.row][temp.col].AdjacentNode.front; n != NULL; n = n->next) {
+                if (cleaned[n->value.row][n->value.col] == false) {
+                    visit.push(n->value);
+                    path++;
+                }
+            }
+            break;
+        }
+    }
     // To Do
 
 }
@@ -398,6 +441,7 @@ int main(int argc, char *argv[])
     robot.ReadFile(argv[1]);
     robot.FindAdjNode();
     robot.FindDisToR();
+    robot.Cleaning();
     robot.WriteFile();
     return 0;
 }
