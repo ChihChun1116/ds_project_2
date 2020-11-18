@@ -289,7 +289,7 @@ void Robot::DFS(position p)
         if (b_level == x) {
             for (sq_node<position>* n = room[temp.row][temp.col].AdjacentNode.head; n != NULL; n = n->next) {
                 if (cleaned[n->value.row][n->value.col] == false) {
-                    visit.push(n->value);
+                    dfspoint.push(n->value);
                     path++;
                 }
             }
@@ -301,7 +301,7 @@ void Robot::DFS(position p)
         temp = room[temp.row][temp.col].parent;
         for (sq_node<position>* n = room[temp.row][temp.col].AdjacentNode.head; n != NULL; n = n->next) {
             if (cleaned[n->value.row][n->value.col] == false) {
-                visit.push(n->value);
+                dfspoint.push(n->value);
             }
         }
         cleaned[temp.row][temp.col] = true;
@@ -341,6 +341,10 @@ void Robot::Cleaning()
        }
     }
     cout << "done" << endl;
+    for (int i = 0; i < width; i++) {
+        delete [] cleaned[i];
+    }
+    delete [] cleaned;
     return;
 }
 
