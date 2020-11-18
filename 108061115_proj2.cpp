@@ -429,7 +429,7 @@ void Robot::Cleaning()
 
 void Robot::WriteFile()
 {
-    ofstream out_file("108061115.path");
+    ofstream out_file("3.path");
     if (!out_file) {
         cout<< "Can't open out_file!" << endl;
         return;
