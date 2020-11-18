@@ -112,7 +112,7 @@ class Robot {
         bool** cleaned;
         stack<position> dfspoint;
         queue<position> route;
-        queue<int> Battery;
+        //queue<int> Battery;
 };
 
 void Robot::ReadFile(char* file)
@@ -253,7 +253,7 @@ void Robot::DFS(position p)
         cleaned[temp.row][temp.col] = true;
         route.push(temp);
         b_level--;
-        Battery.push(b_level);
+        //Battery.push(b_level);
         visit.pop();
     }
     x = room[temp.row][temp.col].DistanceToR;
@@ -272,7 +272,7 @@ void Robot::DFS(position p)
                 cleaned[temp.row][temp.col] = true;
                 route.push(temp);
                 b_level--;
-                Battery.push(b_level);
+                //Battery.push(b_level);
                 dfspoint.pop();
             } else {
                 temp = through.top();
@@ -284,7 +284,7 @@ void Robot::DFS(position p)
                     temp = through.top();
                     route.push(temp);
                     b_level--;
-                    Battery.push(b_level);
+                    //Battery.push(b_level);
                     through.pop();
                 } else {break;}
             } else {break;}
@@ -311,7 +311,7 @@ void Robot::DFS(position p)
         cleaned[temp.row][temp.col] = true;
         route.push(temp);
         b_level--;
-        Battery.push(b_level);
+        //Battery.push(b_level);
     }
     while (!through.empty()) {
         through.pop();
@@ -338,7 +338,7 @@ void Robot::Cleaning()
             DFS(node);
         }
     }
-    for (int i = 0; i < width; i++) {
+    /*for (int i = 0; i < width; i++) {
        for (int j = 0; j < length; j++) {
            if (room[i][j].ch == '0' && cleaned[i][j] == false) {
                cout << i << " " << j << " is not clean" << endl;
@@ -347,7 +347,7 @@ void Robot::Cleaning()
        }
     }
     cout << "done" << endl;
-    cout << R.row << " " << R.col << endl;
+    cout << R.row << " " << R.col << endl;*/
     for (int i = 0; i < width; i++) {
         delete [] cleaned[i];
     }
@@ -365,9 +365,9 @@ void Robot::WriteFile()
     out_file << route.size() << endl;
     out_file << R.row << " " << R.col << endl;
     while (!route.empty()) {
-        out_file << route.front().row << " " << route.front().col << " " << Battery.front() << endl;
+        out_file << route.front().row << " " << route.front().col << endl;
         route.pop();
-        Battery.pop();
+        //Battery.pop();
     }
     out_file.close();
     return;
