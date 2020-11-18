@@ -40,7 +40,7 @@ class LinkList {
         sq_node<T>* tail;
 };
 
-template<class T>
+template <class T>
 void LinkList<T>::add(T& item)
 {
     sq_node<T>* temp = new sq_node<T>(item);
@@ -55,10 +55,10 @@ void LinkList<T>::add(T& item)
     return;
 }
 
-template<class T>
+template <class T>
 T& LinkList<T>::Head() {return head->value;}
 
-template<class T>
+template <class T>
 bool LinkList<T>::IsEmpty()
 {
     if (head == NULL) {
@@ -296,6 +296,7 @@ void Robot::DFS(position p)
             break;
         }
     }
+
     while (!(temp.row == R.row && temp.col == R.col)) {
         temp = room[temp.row][temp.col].parent;
         for (sq_node<position>* n = room[temp.row][temp.col].AdjacentNode.head; n != NULL; n = n->next) {
@@ -332,15 +333,20 @@ void Robot::Cleaning()
         }
     }
     for (int i = 0; i < width; i++) {
-        delete [] cleaned[i];
+       for (int j = 0; j < length; j++) {
+           if (room[i][j].ch == '0' && cleaned[i][j] == false) {
+               cout << i << " " << j << " is not clean" << endl;
+               cout << "Distance to R:" << room[i][j].DistanceToR << endl;
+           }
+       }
     }
-    delete [] cleaned;
+    cout << "done" << endl;
     return;
 }
 
 void Robot::WriteFile()
 {
-    ofstream out_file("3.path");
+    ofstream out_file("108061115.path");        // For different output file, change the name here
     if (!out_file) {
         cout<< "Can't open out_file!" << endl;
         return;
