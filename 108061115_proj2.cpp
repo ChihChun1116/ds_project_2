@@ -357,7 +357,7 @@ void Robot::Cleaning()
 
 void Robot::WriteFile()
 {
-    ofstream out_file("108061115.path");        // For different output file, change the name here
+    ofstream out_file("final.path");        // For different output file, change the name here
     if (!out_file) {
         cout<< "Can't open out_file!" << endl;
         return;
